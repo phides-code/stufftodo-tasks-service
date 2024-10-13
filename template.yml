@@ -1,0 +1,79 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  StufftodoTasksService:
+    Type: AWS::Serverless::Api
+    Description: "Serverless API for CRUD operations"
+    Properties:
+      Name: "stufftodo-tasks-service"
+      StageName: Prod
+      Cors:
+        AllowMethods: "'OPTIONS, POST, GET, PUT, DELETE'"
+        AllowHeaders: "'Content-Type'"
+        AllowOrigin: "'http://localhost:3000'" # replace with frontend app URL
+
+  StufftodoTasksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 10
+      Handler: bootstrap
+      Runtime: provided.al2023
+      Policies:
+        - AWSLambdaExecute
+        - SecretsManagerReadWrite
+        - DynamoDBCrudPolicy:
+            TableName: !Ref StufftodoTasksTable
+      Events:
+        TasksOptions:
+          Type: Api
+          Properties:
+            Path: /tasks
+            Method: OPTIONS
+            RestApiId: !Ref StufftodoTasksService
+        GetTask:
+          Type: Api
+          Properties:
+            Path: /tasks/{id}
+            Method: GET
+            RestApiId: !Ref StufftodoTasksService
+        GetTasks:
+          Type: Api
+          Properties:
+            Path: /tasks
+            Method: GET
+            RestApiId: !Ref StufftodoTasksService
+        PutTask:
+          Type: Api
+          Properties:
+            Path: /tasks
+            Method: POST
+            RestApiId: !Ref StufftodoTasksService
+        DeleteTask:
+          Type: Api
+          Properties:
+            Path: /tasks/{id}
+            Method: DELETE
+            RestApiId: !Ref StufftodoTasksService
+        UpdateTask:
+          Type: Api
+          Properties:
+            Path: /tasks/{id}
+            Method: PUT
+            RestApiId: !Ref StufftodoTasksService
+    Metadata:
+      BuildMethod: makefile
+
+  StufftodoTasksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: StufftodoTasks
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
