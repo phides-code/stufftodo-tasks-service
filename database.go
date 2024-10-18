@@ -16,10 +16,10 @@ import (
 )
 
 type Entity struct {
-	Id          string `json:"id" dynamodbav:"id"`
-	Content     string `json:"content" dynamodbav:"content"`
-	TaskStatus  string `json:"taskStatus" dynamodbav:"taskStatus"`
-	CompletedOn uint64 `json:"completedOn" dynamodbav:"completedOn"`
+	Id          string  `json:"id" dynamodbav:"id"`
+	Content     string  `json:"content" dynamodbav:"content"`
+	TaskStatus  string  `json:"taskStatus" dynamodbav:"taskStatus"`
+	CompletedOn *uint64 `json:"completedOn" dynamodbav:"completedOn"` // * to allow 0
 }
 
 type NewEntity struct {
@@ -27,15 +27,15 @@ type NewEntity struct {
 }
 
 type UpdatedEntity struct {
-	Content     string `json:"content" validate:"required"`
-	TaskStatus  string `json:"taskStatus" validate:"oneof=PENDING COMPLETED"`
-	CompletedOn uint64 `json:"completedOn" validate:"required"`
+	Content     string  `json:"content" validate:"required"`
+	TaskStatus  string  `json:"taskStatus" validate:"required,oneof=PENDING COMPLETED"`
+	CompletedOn *uint64 `json:"completedOn" validate:"required"` // * to allow 0
 }
 
-func getClient() (dynamodb.Client, error) {
+func getClient() (*dynamodb.Client, error) {
 	sdkConfig, err := config.LoadDefaultConfig(context.TODO())
 
-	dbClient := *dynamodb.NewFromConfig(sdkConfig)
+	dbClient := dynamodb.NewFromConfig(sdkConfig)
 
 	return dbClient, err
 }
@@ -110,11 +110,14 @@ func listEntities(ctx context.Context) ([]Entity, error) {
 }
 
 func insertEntity(ctx context.Context, newEntity NewEntity) (*Entity, error) {
+
+	completedOnValue := uint64(0) // Create a uint64 with value 0
+
 	entity := Entity{
 		Id:          uuid.NewString(),
 		Content:     newEntity.Content,
 		TaskStatus:  "PENDING",
-		CompletedOn: 0,
+		CompletedOn: &completedOnValue,
 	}
 
 	entityMap, err := attributevalue.MarshalMap(entity)

@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
-var db dynamodb.Client
+var db *dynamodb.Client
 
 func init() {
 	dbClient, err := getClient()
