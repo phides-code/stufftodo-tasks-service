@@ -13,6 +13,7 @@ func init() {
 	dbClient, err := getClient()
 
 	if err != nil {
+		log.Println("init() error running getClient(): ")
 		log.Fatal(err)
 	}
 
