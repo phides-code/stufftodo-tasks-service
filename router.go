@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -24,7 +25,26 @@ var headers = map[string]string{
 }
 
 func router(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	log.Println("Received " + req.HTTPMethod + " request")
+	log.Println("router() received " + req.HTTPMethod + " request")
+
+	providedApiKey := req.Headers["X-Api-Key"]
+	apiKey, err := getApiKey()
+
+	if err != nil {
+		log.Printf("router() error running getApiKey(): %v", err)
+		return serverError(err)
+	}
+
+	if apiKey == nil {
+		errorMessage := "router() error: apiKey not found"
+		log.Println(errorMessage)
+		return serverError(errors.New(errorMessage))
+	}
+
+	if providedApiKey != *apiKey {
+		log.Println("router() error: apiKey mismatch")
+		return clientError(http.StatusUnauthorized)
+	}
 
 	switch req.HTTPMethod {
 	case "GET":

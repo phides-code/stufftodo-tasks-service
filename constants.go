@@ -8,3 +8,6 @@ const TableName = "StufftodoTasks"
 
 // replace with API path
 const ApiPath = "tasks"
+
+// replace with key name
+const ApiKeyName = "STUFFTODO_API_KEY"

@@ -32,9 +32,8 @@ type UpdatedEntity struct {
 	CompletedOn *uint64 `json:"completedOn" validate:"required"` // * to allow 0
 }
 
-func getClient() (*dynamodb.Client, error) {
+func getDbClient() (*dynamodb.Client, error) {
 	sdkConfig, err := config.LoadDefaultConfig(context.TODO())
-
 	dbClient := dynamodb.NewFromConfig(sdkConfig)
 
 	return dbClient, err
