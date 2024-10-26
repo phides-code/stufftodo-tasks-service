@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -20,6 +21,7 @@ type Entity struct {
 	Content     string  `json:"content" dynamodbav:"content"`
 	TaskStatus  string  `json:"taskStatus" dynamodbav:"taskStatus"`
 	CompletedOn *uint64 `json:"completedOn" dynamodbav:"completedOn"` // * to allow 0
+	CreatedOn   uint64  `json:"createdOn" dynamodbav:"createdOn"`
 }
 
 type NewEntity struct {
@@ -110,13 +112,15 @@ func listEntities(ctx context.Context) ([]Entity, error) {
 
 func insertEntity(ctx context.Context, newEntity NewEntity) (*Entity, error) {
 
-	completedOnValue := uint64(0) // Create a uint64 with value 0
+	completedOnValue := uint64(0)                    // Create a uint64 with value 0
+	createdOnValue := uint64(time.Now().UnixMilli()) // Create a uint64 with current epoch
 
 	entity := Entity{
 		Id:          uuid.NewString(),
 		Content:     newEntity.Content,
 		TaskStatus:  "PENDING",
 		CompletedOn: &completedOnValue,
+		CreatedOn:   createdOnValue,
 	}
 
 	entityMap, err := attributevalue.MarshalMap(entity)
