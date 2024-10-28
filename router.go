@@ -27,7 +27,13 @@ var headers = map[string]string{
 func router(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.Println("router() received " + req.HTTPMethod + " request")
 
-	providedApiKey := req.Headers["X-Api-Key"]
+	providedApiKey := req.Headers["x-api-key"]
+
+	// x-api-key shows up in Camel-Case when run in SAM for some reason
+	if providedApiKey == "" {
+		providedApiKey = req.Headers["X-Api-Key"]
+	}
+
 	apiKey, err := getApiKey()
 
 	if err != nil {
