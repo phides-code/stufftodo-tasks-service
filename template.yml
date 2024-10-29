@@ -19,6 +19,7 @@ Resources:
       Timeout: 10
       Handler: bootstrap
       Runtime: provided.al2023
+      MemorySize: 512
       Policies:
         - AWSLambdaExecute
         - SecretsManagerReadWrite
