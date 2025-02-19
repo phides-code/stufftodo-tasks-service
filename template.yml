@@ -10,8 +10,8 @@ Resources:
       StageName: Prod
       Cors:
         AllowMethods: "'OPTIONS, POST, GET, PUT, DELETE'"
-        AllowHeaders: "'Content-Type'"
-        AllowOrigin: "'http://localhost:3000'" # replace with frontend app URL
+        AllowHeaders: "'Content-Type, x-api-key'"
+        AllowOrigin: "'http://localhost:5173'" # replace with frontend app URL
 
   StufftodoTasksFunction:
     Type: AWS::Serverless::Function

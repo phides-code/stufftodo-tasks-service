@@ -156,6 +156,10 @@ func updateEntity(ctx context.Context, id string, updatedEntity UpdatedEntity) (
 		return nil, err
 	}
 
+	if updatedEntity.TaskStatus == "COMPLETED" {
+		*updatedEntity.CompletedOn = uint64(time.Now().UnixMilli())
+	}
+
 	expr, err := expression.NewBuilder().WithUpdate(
 		expression.Set(
 			expression.Name("content"),
