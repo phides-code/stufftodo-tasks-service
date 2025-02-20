@@ -27,6 +27,10 @@ var headers = map[string]string{
 func router(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.Println("router() received " + req.HTTPMethod + " request")
 
+	if req.HTTPMethod == "OPTIONS" {
+		return processOptions()
+	}
+
 	providedApiKey := req.Headers["x-api-key"]
 
 	// x-api-key shows up in Camel-Case when run in SAM for some reason
@@ -61,8 +65,6 @@ func router(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIG
 		return processDelete(ctx, req)
 	case "PUT":
 		return processPut(ctx, req)
-	case "OPTIONS":
-		return processOptions()
 	default:
 		log.Println("router() error parsing HTTP method")
 		return clientError(http.StatusMethodNotAllowed)
