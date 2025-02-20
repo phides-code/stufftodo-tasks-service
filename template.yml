@@ -11,7 +11,8 @@ Resources:
       Cors:
         AllowMethods: "'OPTIONS, POST, GET, PUT, DELETE'"
         AllowHeaders: "'Content-Type, x-api-key'"
-        AllowOrigin: "'http://localhost:5173'" # replace with frontend app URL
+        # AllowOrigin: "'http://localhost:5173'" # replace with frontend app URL
+        AllowOrigin: "'https://d3gvjncxxemfbd.cloudfront.net/'" # replace with frontend app URL
 
   StufftodoTasksFunction:
     Type: AWS::Serverless::Function
