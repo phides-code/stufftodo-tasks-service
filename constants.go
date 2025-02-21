@@ -2,7 +2,8 @@ package main
 
 // replace with frontend app URL
 // const OriginURL = "http://localhost:5173"
-const OriginURL = "https://d3gvjncxxemfbd.cloudfront.net"
+
+const OriginURL = "https://stufftodo.phil-code.com"
 
 // replace with table name
 const TableName = "StufftodoTasks"
