@@ -1,6 +1,12 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  ApiKeyValue:
+    Type: String
+    NoEcho: true
+    Description: "API Key for the StufftodoTasksService"
+
 Resources:
   StufftodoTasksService:
     Type: AWS::Serverless::Api
@@ -13,6 +19,40 @@ Resources:
         AllowHeaders: "'Content-Type, x-api-key'"
         # AllowOrigin: "'http://localhost:5173'" # replace with frontend app URL
         AllowOrigin: "'https://stufftodo.phil-code.com'" # replace with frontend app URL
+      Auth:
+        ApiKeyRequired: true
+
+  StufftodoApiKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Name: "StufftodoApiKey"
+      Enabled: true
+      Value: !Ref ApiKeyValue
+      StageKeys:
+        - RestApiId: !Ref StufftodoTasksService
+          StageName: Prod
+
+  StufftodoUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      UsagePlanName: "StufftodoUsagePlan"
+      ApiStages:
+        - ApiId: !Ref StufftodoTasksService
+          Stage: Prod
+      Throttle:
+        RateLimit: 100
+        BurstLimit: 20
+      Quota:
+        Limit: 10000
+        Period: MONTH
+
+  StufftodoUsagePlanKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyId: !Ref StufftodoApiKey
+      KeyType: API_KEY
+      UsagePlanId: !Ref StufftodoUsagePlan
+
 
   StufftodoTasksFunction:
     Type: AWS::Serverless::Function
@@ -23,7 +63,6 @@ Resources:
       MemorySize: 512
       Policies:
         - AWSLambdaExecute
-        - SecretsManagerReadWrite
         - DynamoDBCrudPolicy:
             TableName: !Ref StufftodoTasksTable
       Events:

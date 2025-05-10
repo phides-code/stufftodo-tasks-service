@@ -12,4 +12,4 @@ const TableName = "StufftodoTasks"
 const ApiPath = "tasks"
 
 // replace with key name
-const ApiKeyName = "STUFFTODO_API_KEY"
+// const ApiKeyName = "STUFFTODO_API_KEY"

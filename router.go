@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -27,34 +26,34 @@ var headers = map[string]string{
 func router(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	log.Println("router() received " + req.HTTPMethod + " request")
 
-	if req.HTTPMethod == "OPTIONS" {
-		return processOptions()
-	}
+	// if req.HTTPMethod == "OPTIONS" {
+	// 	return processOptions()
+	// }
 
-	providedApiKey := req.Headers["x-api-key"]
+	// providedApiKey := req.Headers["x-api-key"]
 
 	// x-api-key shows up in Camel-Case when run in SAM for some reason
-	if providedApiKey == "" {
-		providedApiKey = req.Headers["X-Api-Key"]
-	}
+	// if providedApiKey == "" {
+	// 	providedApiKey = req.Headers["X-Api-Key"]
+	// }
 
-	apiKey, err := getApiKey()
+	// apiKey, err := getApiKey()
 
-	if err != nil {
-		log.Printf("router() error running getApiKey(): %v", err)
-		return serverError(err)
-	}
+	// if err != nil {
+	// 	log.Printf("router() error running getApiKey(): %v", err)
+	// 	return serverError(err)
+	// }
 
-	if apiKey == nil {
-		errorMessage := "router() error: apiKey not found"
-		log.Println(errorMessage)
-		return serverError(errors.New(errorMessage))
-	}
+	// if apiKey == nil {
+	// 	errorMessage := "router() error: apiKey not found"
+	// 	log.Println(errorMessage)
+	// 	return serverError(errors.New(errorMessage))
+	// }
 
-	if providedApiKey != *apiKey {
-		log.Println("router() error: apiKey mismatch")
-		return clientError(http.StatusUnauthorized)
-	}
+	// if providedApiKey != *apiKey {
+	// 	log.Println("router() error: apiKey mismatch")
+	// 	return clientError(http.StatusUnauthorized)
+	// }
 
 	switch req.HTTPMethod {
 	case "GET":
@@ -65,6 +64,8 @@ func router(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIG
 		return processDelete(ctx, req)
 	case "PUT":
 		return processPut(ctx, req)
+	case "OPTIONS":
+		return processOptions()
 	default:
 		log.Println("router() error parsing HTTP method")
 		return clientError(http.StatusMethodNotAllowed)
