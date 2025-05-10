@@ -53,7 +53,6 @@ Resources:
       KeyType: API_KEY
       UsagePlanId: !Ref StufftodoUsagePlan
 
-
   StufftodoTasksFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -81,7 +80,7 @@ Resources:
             Method: GET
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: false
+              ApiKeyRequired: true
         GetTasks:
           Type: Api
           Properties:
@@ -89,7 +88,7 @@ Resources:
             Method: GET
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: false
+              ApiKeyRequired: true
         PutTask:
           Type: Api
           Properties:
@@ -97,7 +96,7 @@ Resources:
             Method: POST
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: false
+              ApiKeyRequired: true
         DeleteTask:
           Type: Api
           Properties:
@@ -105,7 +104,7 @@ Resources:
             Method: DELETE
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: false
+              ApiKeyRequired: true
         UpdateTask:
           Type: Api
           Properties:
@@ -113,7 +112,7 @@ Resources:
             Method: PUT
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: false
+              ApiKeyRequired: true
     Metadata:
       BuildMethod: makefile
 
