@@ -16,13 +16,6 @@ func init() {
 		log.Fatal(err)
 	}
 	db = dbClient
-
-	// smClient, err := getSmClient()
-	// if err != nil {
-	// 	log.Println("init() error running getSecretsManagerClient(): ")
-	// 	log.Fatal(err)
-	// }
-	// sm = smClient
 }
 
 func main() {
