@@ -72,6 +72,8 @@ Resources:
             Path: /tasks
             Method: OPTIONS
             RestApiId: !Ref StufftodoTasksService
+            Auth:
+              ApiKeyRequired: false
         GetTask:
           Type: Api
           Properties:
