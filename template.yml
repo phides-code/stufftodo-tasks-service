@@ -73,6 +73,14 @@ Resources:
             RestApiId: !Ref StufftodoTasksService
             Auth:
               ApiKeyRequired: false
+        TasksOptionsId:
+          Type: Api
+          Properties:
+            Path: /tasks/{id}
+            Method: OPTIONS
+            RestApiId: !Ref StufftodoTasksService
+            Auth:
+              ApiKeyRequired: false
         GetTask:
           Type: Api
           Properties:
