@@ -80,30 +80,40 @@ Resources:
             Path: /tasks/{id}
             Method: GET
             RestApiId: !Ref StufftodoTasksService
+            Auth:
+              ApiKeyRequired: true
         GetTasks:
           Type: Api
           Properties:
             Path: /tasks
             Method: GET
             RestApiId: !Ref StufftodoTasksService
+            Auth:
+              ApiKeyRequired: true
         PutTask:
           Type: Api
           Properties:
             Path: /tasks
             Method: POST
             RestApiId: !Ref StufftodoTasksService
+            Auth:
+              ApiKeyRequired: true
         DeleteTask:
           Type: Api
           Properties:
             Path: /tasks/{id}
             Method: DELETE
             RestApiId: !Ref StufftodoTasksService
+            Auth:
+              ApiKeyRequired: true
         UpdateTask:
           Type: Api
           Properties:
             Path: /tasks/{id}
             Method: PUT
             RestApiId: !Ref StufftodoTasksService
+            Auth:
+              ApiKeyRequired: true
     Metadata:
       BuildMethod: makefile
 
