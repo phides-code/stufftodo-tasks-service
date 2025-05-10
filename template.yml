@@ -81,7 +81,7 @@ Resources:
             Method: GET
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: true
+              ApiKeyRequired: false
         GetTasks:
           Type: Api
           Properties:
@@ -89,7 +89,7 @@ Resources:
             Method: GET
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: true
+              ApiKeyRequired: false
         PutTask:
           Type: Api
           Properties:
@@ -97,7 +97,7 @@ Resources:
             Method: POST
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: true
+              ApiKeyRequired: false
         DeleteTask:
           Type: Api
           Properties:
@@ -105,7 +105,7 @@ Resources:
             Method: DELETE
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: true
+              ApiKeyRequired: false
         UpdateTask:
           Type: Api
           Properties:
@@ -113,7 +113,7 @@ Resources:
             Method: PUT
             RestApiId: !Ref StufftodoTasksService
             Auth:
-              ApiKeyRequired: true
+              ApiKeyRequired: false
     Metadata:
       BuildMethod: makefile
 
