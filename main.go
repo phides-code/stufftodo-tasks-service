@@ -12,7 +12,7 @@ var db *dynamodb.Client
 func init() {
 	dbClient, err := getDbClient()
 	if err != nil {
-		log.Println("init() error running getClient(): ")
+		log.Println("init() error running getDbClient(): ")
 		log.Fatal(err)
 	}
 	db = dbClient
