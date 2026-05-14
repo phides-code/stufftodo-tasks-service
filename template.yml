@@ -22,6 +22,14 @@ Resources:
       Auth:
         ApiKeyRequired: true
 
+      # Logging settings
+      MethodSettings:
+        - LoggingLevel: INFO
+          ResourcePath: "/*"
+          HttpMethod: "*"
+          MetricsEnabled: true
+          DataTraceEnabled: true        
+
   StufftodoApiKey:
     Type: AWS::ApiGateway::ApiKey
     Properties:
